@@ -28,14 +28,41 @@ SCRIPT_LICENSE = "GPL3"
 SCRIPT_DESC    = "Use fribidi to handle RTL text"
 
 
+def filter_log1_to_log9(tags_str):
+    """
+    Filters 'log1' to 'log9' out of a tags string.
+    Result is later used to construct a displayed message's tags string.
+    """
+
+    log1_to_log9 = ('log' + str(i) for i in range(10))
+    no_log_tags = ','.join(
+        (tags_str.split(',')
+         for tag in tags_str.split(',')
+         if tag not in log1_to_log9)
+    )
+    return no_log_tags
+
+
 def biditext_cb(data, modifier, modifier_data, line):
+    """
+    biditext_cb does two things:
+        * Logs a line untransformed using the `no_log` tag.
+        * Displays the line after it was transformed with fribidi using the
+          `no_show_non_bidied` tag.
+    returns an empty line because the messages were already handled
+    inside the body of the function.
+    """
+
     ltr_line = log2vis(line, LTR)
 
     plugin_name, buffer_name, tags = modifier_data.split(';')
     buffer_pointer = weechat.buffer_search(plugin_name, buffer_name)
 
-    weechat.prnt_date_tags(buffer_pointer, 0, tags + ',no_show_non_bidied', line)
-    weechat.prnt_date_tags(buffer_pointer, 0, 'no_log', ltr_line)
+    no_show_non_bidied_tags = tags + ',no_show_non_bidied'
+    no_log_tags = filter_log1_to_log9(tags) + ',no_log'
+
+    weechat.prnt_date_tags(buffer_pointer, 0, no_show_non_bidied_tags, line)
+    weechat.prnt_date_tags(buffer_pointer, 0, no_log_tags, ltr_line)
 
     return ""
 
