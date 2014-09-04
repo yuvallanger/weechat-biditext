@@ -35,10 +35,11 @@ def filter_log1_to_log9(tags_str):
     """
 
     log1_to_log9 = ('log' + str(i) for i in range(10))
+    tag_list = tags_str.split(',')
     no_log_tags = ','.join(
-        (tags_str.split(',')
-         for tag in tags_str.split(',')
-         if tag not in log1_to_log9)
+        tag
+        for tag in tag_list
+        if tag not in log1_to_log9
     )
     return no_log_tags
 
