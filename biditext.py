@@ -34,14 +34,17 @@ def filter_log1_to_log9(tags_str):
     Result is later used to construct a displayed message's tags string.
     """
 
-    log1_to_log9 = ('log' + str(i) for i in range(10))
+    log1_to_log9_list = ['log' + str(i) for i in range(1,10)]
+
     tag_list = tags_str.split(',')
-    no_log_tags = ','.join(
+
+    no_logn_tag_str = ','.join(
         tag
         for tag in tag_list
-        if tag not in log1_to_log9
+        if tag not in log1_to_log9_list
     )
-    return no_log_tags
+
+    return no_logn_tag_str
 
 
 def biditext_cb(data, modifier, modifier_data, line):
@@ -84,4 +87,3 @@ if __name__ == "__main__":
             'biditext_cb',
             '',
         )
-
