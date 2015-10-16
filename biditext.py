@@ -21,11 +21,13 @@
 import weechat
 from pyfribidi import log2vis, LTR
 
-SCRIPT_NAME    = "biditext"
-SCRIPT_AUTHOR  = "Oscar Morante <oscar@morante.eu>"
-SCRIPT_VERSION = "2"
-SCRIPT_LICENSE = "GPL3"
-SCRIPT_DESC    = "Use fribidi to handle RTL text"
+SCRIPT_NAME              = "biditext"
+SCRIPT_AUTHOR            = "Oscar Morante <oscar@morante.eu>"
+SCRIPT_VERSION           = "2"
+SCRIPT_LICENSE           = "GPL3"
+SCRIPT_DESC              = "Use fribidi to handle RTL text"
+SCRIPT_SHUTDOWN_FUNCTION = ""
+SCRIPT_CHARSET           = ""
 
 
 def filter_log1_to_log9(tags_str):
@@ -50,9 +52,11 @@ def filter_log1_to_log9(tags_str):
 def biditext_cb(data, modifier, modifier_data, line):
     """
     biditext_cb does two things:
+
         * Logs a line untransformed using the `no_log` tag.
         * Displays the line after it was transformed with fribidi using the
           `no_show_non_bidied` tag.
+
     returns an empty line because the messages were already handled
     inside the body of the function.
     """
@@ -78,8 +82,8 @@ if __name__ == "__main__":
         SCRIPT_VERSION,
         SCRIPT_LICENSE,
         SCRIPT_DESC,
-        "",
-        "",
+        SCRIPT_SHUTDOWN_FUNCTION,
+        SCRIPT_CHARSET,
     )
     if script_registered:
         weechat.hook_modifier(
