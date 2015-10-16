@@ -19,11 +19,11 @@
 # This script uses fribidi library to display rtl text properly
 
 import weechat
-from pyfribidi import log2vis, LTR
+import bidi.algorithm
 
 SCRIPT_NAME              = "biditext"
 SCRIPT_AUTHOR            = "Oscar Morante <oscar@morante.eu>"
-SCRIPT_VERSION           = "2"
+SCRIPT_VERSION           = "3"
 SCRIPT_LICENSE           = "GPL3"
 SCRIPT_DESC              = "Use fribidi to handle RTL text"
 SCRIPT_SHUTDOWN_FUNCTION = ""
@@ -61,7 +61,7 @@ def biditext_cb(data, modifier, modifier_data, line):
     inside the body of the function.
     """
 
-    ltr_line = log2vis(line, LTR)
+    ltr_line = bidi.algorithm.get_display(line)
 
     plugin_name, buffer_name, tags = modifier_data.split(';')
     buffer_pointer = weechat.buffer_search(plugin_name, buffer_name)
